@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Document</title>
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    border-style: none;
+  }
+  body {
+    display: flex;
+    flex-direction: column;
+  }
+  #operate {
+    margin: 5px;
+    width: 70px;
+    height: 70px;
+    border: 1px solid black;
+  }
+  #result {
+    width: 233px;
+    height: 70px;
+    border: 1px solid black;
+  }
+  main {
+    width: 400px;
+    height: 400px;
+  }
+  ul {
+    display: flex;
+  }
+  li {
+    list-style: none;
+    width: 70px;
+    height: 70px;
+    margin: 5px 5px 5px 5px;
+    border: 1px solid black;
+    text-align: center;
+    line-height: 70px;
+  }
+</style>
+</head>
+<body>
+<header>
+  <input id="operate"></input>
+  <input id="result"></input>
+</header>
+<main>
+  <ul>
+    <li id="percent">%</li>
+    <li id="cancel">C</li>
+    <li id="divide">/</li>
+    <li id="backSpace"><-</li>
+  </ul>
+  <ul>
+    <li id="num7">7</li>
+    <li id="num8">8</li>
+    <li id="num9">9</li>
+    <li id="multiply">X</li>
+  </ul>
+  <ul>
+    <li id="num4">4</li>
+    <li id="num5">5</li>
+    <li id="num6">6</li>
+    <li id="plus">+</li>
+  </ul>
+  <ul>
+    <li id="num1">1</li>
+    <li id="num2">2</li>
+    <li id="num3">3</li>
+    <li id="minus">-</li>
+  </ul>
+  <ul>
+    <li id="null">미구현</li>
+    <li id="num0">0</li>
+    <li id="dot">.</li>
+    <li id="operator">=</li>
+  </ul>
+</main>
+<script src="/calculator.js"></script>
+</body>
+</html>
