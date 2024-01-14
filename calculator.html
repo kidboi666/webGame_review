@@ -9,49 +9,74 @@
     margin: 0;
     padding: 0;
     border-style: none;
+    border-collapse: collapse;
+    border-radius: 20px;
   }
   body {
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #344E41;
+    color: #DAD7CD;
   }
   #operate {
+    text-align: center;
+    font-size: large;
     margin: 5px;
     width: 70px;
     height: 70px;
-    border: 1px solid black;
+    border: 1px solid #DAD7CD;
+    background-color: #588157;
+    color: #DAD7CD;
   }
   #result {
-    width: 233px;
+    text-align: right; 
+    font-size: large;
+    margin: 0 5px 0 0;
+    width: 234px;
     height: 70px;
-    border: 1px solid black;
+    border: 1px solid #DAD7CD;
+    background-color: #588157;
+    color: #DAD7CD;
   }
   main {
-    width: 400px;
     height: 400px;
   }
   ul {
     display: flex;
   }
-  li {
+  li {  /*총너비 328 */
     list-style: none;
     width: 70px;
     height: 70px;
     margin: 5px 5px 5px 5px;
-    border: 1px solid black;
     text-align: center;
     line-height: 70px;
+    border: 1px solid #DAD7CD;
+    background-color: #588157;
+    transition: background-color .3s;
+  }
+  li:hover {
+    background-color: #A3B18A;
+  }
+  li:active {
+    background-color: #DAD7CD;
+  }
+  #num0 {
+    width: 152px;
   }
 </style>
 </head>
 <body>
 <header>
-  <input id="operate"></input>
-  <input id="result"></input>
+  <input id="operate" readonly></input>
+  <input id="result" readonly></input>
 </header>
 <main>
   <ul>
     <li id="percent">%</li>
-    <li id="cancel">C</li>
+    <li id="clear">C</li>
     <li id="divide">/</li>
     <li id="backSpace"><-</li>
   </ul>
@@ -74,7 +99,6 @@
     <li id="minus">-</li>
   </ul>
   <ul>
-    <li id="null">미구현</li>
     <li id="num0">0</li>
     <li id="dot">.</li>
     <li id="operator">=</li>
