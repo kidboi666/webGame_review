@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Document</title>
+</head>
+<body>
+<form id="form">
+  <input type="number" id="input">
+  <button id="button">확인</button>
+</form>
+<div id="text__wrap">
+  <div id="life"></div>
+  <div id="result"></div>
+</div>
+<script>
+const $form = document.querySelector('#form');
+const $input = document.querySelector('#input');
+const $button = document.querySelector('#button');
+const $life = document.querySelector('#life');
+const $result = document.querySelector('#result');
+const answer = [];
+const tries = [];
+let life = 10;
+let out = 0;
+
+function createAnswerNumber() {
+  const numbers = [];
+  for (let i = 0; i < 9; i++) {
+    numbers.push(i + 1);
+  }
+  for (let j = 0; j < 4; j++) {
+    const randomNumber = Math.floor(Math.random() * numbers.length);
+    answer.push(numbers[randomNumber]);
+    numbers.splice(randomNumber, 1);
+  }
+}
+
+function checkForm(event) {
+  event.preventDefault();
+  const input = $input.value;
+  $input.value = '';
+  if (input.length !== 4) {
+    return alert('4자리 숫자를 입력하세요');
+  }
+  if (tries.includes(input)) {
+    return alert('시도한 숫자 입니다');
+  }
+  if (new Set(input).size !== 4) { // new Set(arr) 중복 숫자를 알아서 제거
+    return alert('숫자를 중복되지 않게 입력해주세요');
+  }
+  tries.push(input);
+  checkAnswer(input);
+}
+
+function checkAnswer(value) {
+  life -= 1;
+  $life.textContent = `남은 시도 횟수: ${life}`;
+  if (value === answer.join('')) {
+    $form.removeEventListener('submit', checkForm);
+    return alert('축하합니다');
+  }
+  if (!life) {
+    $form.removeEventListener('submit', checkForm);
+    return alert(`패배하였습니다! 정답은 ${answer}였습니다..`);
+  }
+  checkNumber(value);
+}
+
+function checkNumber(input) {
+  let strike = 0;
+  let ball = 0;
+  let outTemp = 0;
+  for (let i = 0; i < 4; i++) {
+    const num = input.indexOf(answer[i]);
+    if (num > -1) {
+      if (num === i) { // 정답의 위치와 입력값의 위치 인덱스가 같다는건 스트라이크
+        strike += 1;
+      } else {
+        ball += 1;
+      }
+    } else {
+      outTemp += 1;
+    }
+  }
+  if (outTemp >= 4) { 
+    out += 1;
+    outTemp = 0;
+  }
+  if (out >= 3) {
+    $form.removeEventListener('submit', checkForm);
+    alert('아웃3회로 패배하였습니다!');
+  }
+  $result.textContent = `스트라이크 : ${strike} , 볼 : ${ball} , 아웃 : ${out}`
+}
+
+createAnswerNumber();
+$form.addEventListener('submit', checkForm);
+console.log(answer)
+</script>
+</body>
+</html>
