@@ -55,7 +55,7 @@ function createRandomNumber() {
     const randomNumber = Math.floor(Math.random() * candidate.length);
     const candidateRandom = candidate.splice(randomNumber, 1) // 배열을 반환
     const value = candidateRandom[0] // 매번 배열 자체를 넣을 순 없으니 배열의 인덱스를 뽑아서 원시값을 따로 할당
-    shuffle.push(value) // 배열이 아닌 원시값을 배열안에 푸쉬
+    shuffle.push(value) // 배열이 아닌 원시값을 배열안에 푸쉬`
   }
   createCandidateNumbers();
 }
@@ -78,14 +78,16 @@ function drawNumbers() {
       $balls.classList.add('balls')
       $balls.textContent = candidateNumbers[i];
       switch(true) {
-        case candidateNumbers[i] > 40 : $balls.classList.add('ballColor40'); break;
-        case candidateNumbers[i] > 30 : $balls.classList.add('ballColor30'); break;
-        case candidateNumbers[i] > 20 : $balls.classList.add('ballColor20'); break;
-        case candidateNumbers[i] > 10 : $balls.classList.add('ballColor10'); break;
+        case candidateNumbers[i] >= 40 : $balls.classList.add('ballColor40'); break;
+        case candidateNumbers[i] >= 30 : $balls.classList.add('ballColor30'); break;
+        case candidateNumbers[i] >= 20 : $balls.classList.add('ballColor20'); break;
+        case candidateNumbers[i] >= 10 : $balls.classList.add('ballColor10'); break;
         case candidateNumbers[i] > 1 : $balls.classList.add('ballColor1'); break;
       }
       if (i === 6) {
-        return $bonus.append($balls);
+        return setTimeout(() => {
+          $bonus.append($balls);
+        }, 1000)
       }
       $result.append($balls);
     }, 1000 * (i + 1))
