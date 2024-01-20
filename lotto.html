@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    #result {
+      display: flex;
+      justify-content: flex-start;
+      gap: 10px;
+    }
+    .balls {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 30px;
+      height: 30px;
+      border: 1px solid black;
+      border-radius: 30px;
+    }
+    .ballColor10 {
+      background-color: tomato;
+      color: white;
+    }
+    .ballColor20 {
+      background-color: teal;
+      color: white;
+    }
+    .ballColor30 {
+      background-color: hotpink;
+      color: white;
+    }
+    .ballColor40 {
+      background-color: aquamarine;
+    }
+    .ballColor1 {
+      background-color: wheat;
+    }
+  </style>
+</head>
+<body>
+<div id="result"></div>
+<div id="bonus"></div>
+
+<script>
+const $result = document.querySelector('#result');
+const $bonus = document.querySelector('#bonus');
+const candidateNumbers = [];
+const shuffle = [];
+const candidate = Array(45).fill().map((v, i) =>  i + 1 );
+
+function createRandomNumber() {
+  while(shuffle.length < 45) {
+    const randomNumber = Math.floor(Math.random() * candidate.length);
+    const candidateRandom = candidate.splice(randomNumber, 1) // 배열을 반환
+    const value = candidateRandom[0] // 매번 배열 자체를 넣을 순 없으니 배열의 인덱스를 뽑아서 원시값을 따로 할당
+    shuffle.push(value) // 배열이 아닌 원시값을 배열안에 푸쉬
+  }
+  createCandidateNumbers();
+}
+
+function createCandidateNumbers() {
+  for (let i = 0; i < 7; i++) {
+    const num = shuffle.splice(i, 1);
+    const value = num[0]
+    candidateNumbers.push(value)
+  }
+  candidateNumbers.sort((a,b) => a - b)
+  console.log(candidateNumbers);
+  drawNumbers();
+}
+
+function drawNumbers() {
+  for (let i = 0; i < 7; i++) {
+    setTimeout(() => {
+      const $balls = document.createElement('div');
+      $balls.classList.add('balls')
+      $balls.textContent = candidateNumbers[i];
+      switch(true) {
+        case candidateNumbers[i] > 40 : $balls.classList.add('ballColor40'); break;
+        case candidateNumbers[i] > 30 : $balls.classList.add('ballColor30'); break;
+        case candidateNumbers[i] > 20 : $balls.classList.add('ballColor20'); break;
+        case candidateNumbers[i] > 10 : $balls.classList.add('ballColor10'); break;
+        case candidateNumbers[i] > 1 : $balls.classList.add('ballColor1'); break;
+      }
+      if (i === 6) {
+        return $bonus.append($balls);
+      }
+      $result.append($balls);
+    }, 1000 * (i + 1))
+  }
+}
+
+function colorize(number, ball) {
+  console.log(typeof number);
+}
+
+createRandomNumber();
+
+</script>
+</body>
+</html>
