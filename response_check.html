@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Document</title>
+<style>
+* {
+  margin: 0;
+  padding: 0;
+}
+body {
+  color: white;
+  font-size: 30px;
+  user-select: none;
+}
+.blue__screen {
+  background-color: blue;
+  width: 100%;
+  height: 100vh;
+}
+.green__screen {
+  background-color: green;
+  width: 100%;
+  height: 100vh;
+}
+.red__screen {
+  background-color: red;
+  width: 100%;
+  height: 100vh;
+}
+.yellow__screen {
+  background-color: rgb(205, 205, 0);
+  width: 100%;
+  height: 100vh;
+}
+</style>
+</head>
+<body>
+<div id="wrap"></div>
+<script>
+const $wrap = document.querySelector('#wrap');
+const $screen = document.createElement('div');
+const records = [];
+let startTime;
+let endTime;
+let setTimeoutID;
+let clickable = true;
+let recordsAverageResult;
+$screen.textContent = `시작하려면 클릭하세요!`
+
+function drawScreen(color) {
+  $screen.className = `${color}__screen`;
+  $wrap.appendChild($screen);
+}
+
+function earlyClick(color) {
+  clearTimeout(setTimeoutID);
+  $screen.className = `${color}__screen`;
+  $screen.textContent = `아이고 너무 빨리 누르셨네요 다시 시작하시려면 클릭하세요.`;
+}
+
+function onClickGreenScreen() {
+  setTimeoutID = setTimeout(() => {
+    drawScreen('green');
+    $screen.textContent = `클릭하세요!`;
+    startTime = new Date();
+  }, Math.floor(Math.random() * 1000) + 2000);
+}
+
+function recordsAverage(record) {
+  records.push(record);
+  if(records.length > 1) {
+    const average = Math.floor(records.reduce((a, b) => (a + b)) / records.length);
+    recordsAverageResult = average;
+  } else {
+    recordsAverageResult = record;
+  }
+}
+
+function onClickScreen() {
+  if ($screen.className === 'red__screen') {
+    earlyClick('blue');
+  } else if ($screen.className === 'blue__screen') {
+    drawScreen('red');
+    $screen.textContent = `잠시 후 초록 화면이 나오면 클릭하세요`;
+    onClickGreenScreen();
+  } else if ($screen.className === 'green__screen') {
+    if (clickable) {
+      endTime = new Date();
+      const diff = (endTime - startTime);
+      recordsAverage(diff);
+      $screen.textContent = `클릭까지 걸린시간 : ${diff / 1000}초, 평균 ${recordsAverageResult / 1000}초`;
+      clickable = false;
+      setTimeout(() => {      
+        drawScreen('yellow');
+        const $log = document.createElement('div');
+        $log.textContent = '다시 하시려면 클릭하세요!';
+        $screen.append($log);
+      }, 1000)
+    } else if (!clickable) {
+      return;
+    }
+  } else if ($screen.className === 'yellow__screen') {
+    clickable = true;
+    drawScreen('red');
+    $screen.textContent = `잠시 후 초록 화면이 나오면 클릭하세요`;
+    onClickGreenScreen();
+  }
+}
+
+drawScreen('blue');
+$wrap.addEventListener('click', onClickScreen);
+</script>
+</body>
+</html>

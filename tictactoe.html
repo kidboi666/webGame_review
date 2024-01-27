@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+    }
+    tr {
+      margin: 0;
+      padding: 0;
+      display: flex;
+    }
+    td {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      list-style: none;
+      border: 1px solid black;
+      border-collapse: collapse;
+      width: 100px;
+      height: 100px;
+    }
+  </style>
+</head>
+<body>
+<table id="table"></table>
+<table id="result"></table>
+<script>
+  const $table = document.querySelector('#table');
+  const $result = document.querySelector('#result');
+  const rows = [];
+  let turn = 'X';
+  let hasWinner = false;
+
+  function createTable() {
+    for (let i = 0; i < 3; i++) {
+      const tr = document.createElement('tr');
+      const cells = [];
+      for(let j = 0; j < 3; j++) {
+        const td = document.createElement('td');
+        cells.push(td);
+        tr.append(td);
+      }
+      rows.push(cells);
+      $table.append(tr);
+    }
+  }
+  createTable();
+
+  function checkDraw(target) {
+    let count = 0;
+    rows.forEach((row, ri) => {
+      row.forEach((cell, ci) => {
+        if (cell.textContent) {
+          count += 1;
+        };
+      });
+    });
+    if (count === 9) {
+      setTimeout(() => {
+        $result.textContent = `무승부 입니다!`;
+      }, 50);
+    };
+  }
+
+  function checkWinner(target) {
+    let rowIndex;
+    let cellIndex;
+    rows.forEach((row, ri) => {
+      row.forEach((cell, ci) => {
+        if (cell === target) {
+          rowIndex = ri;
+          cellIndex = ci;
+        };
+      });
+    });
+    console.log(rowIndex); // 클릭한 행의 위치
+    console.log(cellIndex); // 클릭한 열의 위치
+    // 승자 검사기
+    if ( // 가로 검사기
+      rows[rowIndex][0].textContent === turn &&
+      rows[rowIndex][1].textContent === turn &&
+      rows[rowIndex][2].textContent === turn
+    ) hasWinner = true;
+    if ( // 세로 검사기
+      rows[0][cellIndex].textContent === turn &&
+      rows[1][cellIndex].textContent === turn &&
+      rows[2][cellIndex].textContent === turn
+    ) hasWinner = true;
+    if ( // 대각선 검사기 
+      rows[0][0].textContent === turn &&
+      rows[1][1].textContent === turn &&
+      rows[2][2].textContent === turn
+    ) hasWinner = true;
+    if ( // 반대 대각선 검사기
+      rows[2][2].textContent === turn &&
+      rows[1][1].textContent === turn &&
+      rows[0][0].textContent === turn
+    ) hasWinner = true;
+    if (hasWinner) {
+      $result.textContent = `${turn} 이 승리하였습니다!`
+      $table.removeEventListener('click', onClickCallBack);
+    }
+  }
+
+  function onClickCallBack(event) {
+    if (event.target.textContent === '') {
+      event.target.textContent = turn;
+      checkWinner(event.target);
+      checkDraw(event.target);
+      turn = turn === 'O' ? 'X' : 'O';
+    }
+  }
+
+
+  $table.addEventListener('click', onClickCallBack);
+</script>
+</body>
+</html>

@@ -91,6 +91,7 @@ function stopImage(event) {
     }, 1000)
   }
 }
+
 function checkWinner(target) {
   const scoreTable = {
     '바위': 1,
@@ -134,7 +135,6 @@ function removeEvent() {
   clickable = false;
   $form.className = 'hidden'
 }
-
 
 changeImage();
 $form.addEventListener('click', stopImage);
